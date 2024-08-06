@@ -1,26 +1,24 @@
 package com.example;
-import org.hamcrest.MatcherAssert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import java.util.List;
-import static org.hamcrest.CoreMatchers.equalTo;
 
-@RunWith(MockitoJUnitRunner.class)
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
 public class CatTests {
 
-    @Mock
-    Feline feline;
+    Feline feline = Mockito.mock(Feline.class);
 
     @Test
     public void getSound_IsCorrect() {
         String expectedString = "Мяу";
-
-        MatcherAssert.assertThat("Кот мяукает не так",
-                new Cat(feline).getSound(),
-                equalTo(expectedString)
+        assertEquals(
+                expectedString,
+                new Cat(feline).getSound()
         );
     }
 
@@ -30,12 +28,9 @@ public class CatTests {
         List<String> expectedListOfFood = List.of("Мясо");
         Mockito.when(feline.eatMeat()).thenReturn(expectedListOfFood);
 
-        MatcherAssert.assertThat("Вернулся некорректный список еды",
-                cat.getFood(),
-                equalTo(expectedListOfFood)
-
+        assertEquals(
+                expectedListOfFood,
+                cat.getFood()
         );
-
     }
-
 }

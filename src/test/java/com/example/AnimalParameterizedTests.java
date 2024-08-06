@@ -1,36 +1,26 @@
 package com.example;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
 import java.util.List;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(Parameterized.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class AnimalParameterizedTests {
+    @ParameterizedTest(name = "Класс Animal. Тип животного: {0}")
+    @CsvSource({
+            "Хищник, Животные; Птицы; Рыбы",
+            "Травоядное, Трава; Разные растения"
+    })
+    @DisplayName("Проверка типа питания")
+    public void getFood_FoodIsCorrect(String animalKind, String expectedFoodStr) throws Exception {
+        var expectedFood = List.of(expectedFoodStr.split("; "));
 
-    private final String animalKind;
-    private final List<String> expectedFood;
-
-    public AnimalParameterizedTests(String animalKind, List<String> expectedFood) {
-        this.animalKind = animalKind;
-        this.expectedFood = expectedFood;
-    }
-
-    @Parameterized.Parameters(name = "Класс Animal. Тип животного: {0}")
-    public static Object[][] setParams() {
-        return new Object[][]{
-                {"Хищник", List.of("Животные", "Птицы", "Рыбы")},
-                {"Травоядное", List.of("Трава", "Разные растения")}
-        };
-    }
-
-    @Test
-    public void getFood_FoodIsCorrect() throws Exception {
-        assertThat("Неправильный набор еды",
-                new Animal().getFood(animalKind),
-                equalTo(this.expectedFood)
+        assertEquals(
+                expectedFood,
+                new Animal().getFood(animalKind)
         );
     }
-
 }
